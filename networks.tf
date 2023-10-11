@@ -1,6 +1,6 @@
 ### Create VPC's ###
 resource "aws_vpc" "vpc-1" {
-  provider             = aws.region-master
+  ##provider             = aws.region-master
   cidr_block           = var.vpc-1
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc-1" {
   }
 }
 resource "aws_vpc" "vpc-2" {
-  provider             = aws.region-master
+  #provider             = aws.region-master
   cidr_block           = var.vpc-2
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -19,18 +19,18 @@ resource "aws_vpc" "vpc-2" {
 }
 #Create internet Gateways
 resource "aws_internet_gateway" "vpc-1-igw" {
-  provider = aws.region-master
+  ##provider = aws.region-master
   vpc_id   = aws_vpc.vpc-1.id
 }
 
 resource "aws_internet_gateway" "vpc-2-igw" {
-  provider = aws.region-master
+  ##provider = aws.region-master
   vpc_id   = aws_vpc.vpc-2.id
 }
 
 #Get Az's
 data "aws_availability_zones" "azs" {
-  provider = aws.region-master
+  ##provider = aws.region-master
   filter {
     name   = "opt-in-status"
     values = ["opt-in-not-required"]
@@ -39,7 +39,7 @@ data "aws_availability_zones" "azs" {
 
 #create subnets
 resource "aws_subnet" "vpc-1-pub-1" {
-  provider          = aws.region-master
+  ##provider          = aws.region-master
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
   vpc_id            = aws_vpc.vpc-1.id
   cidr_block        = var.vpc-1-pub[0]
@@ -50,7 +50,7 @@ resource "aws_subnet" "vpc-1-pub-1" {
 
 resource "aws_subnet" "vpc-1-priv" {
   count             = "${length(var.vpc-1-priv)}"
-  provider          = aws.region-master
+  ##provider          = aws.region-master
   availability_zone = element(data.aws_availability_zones.azs.names, count.index)
   vpc_id            = aws_vpc.vpc-1.id
   cidr_block        = "${element(var.vpc-1-priv, count.index)}"
@@ -61,7 +61,7 @@ resource "aws_subnet" "vpc-1-priv" {
 }
 
 resource "aws_subnet" "vpc-2-pub-1" {
-  provider          = aws.region-master
+  ##provider          = aws.region-master
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
   vpc_id            = aws_vpc.vpc-2.id
   cidr_block        = var.vpc-2-pub[0]
@@ -72,7 +72,7 @@ resource "aws_subnet" "vpc-2-pub-1" {
 
 
 resource "aws_subnet" "vpc-2-priv-1" {
-  provider          = aws.region-master
+  ##provider          = aws.region-master
   availability_zone = element(data.aws_availability_zones.azs.names, 0)
   vpc_id            = aws_vpc.vpc-2.id
   cidr_block        = var.vpc-2-priv[0]

@@ -1,12 +1,12 @@
 #Get Linux AMI ID using SSM Parameter endpoint in us-east-1
 data "aws_ssm_parameter" "linuxAmi" {
-  provider = aws
+  #provider = aws
   name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 
 #Get Linux AMI ID using SSM Parameter endpoint in us-west-2
 data "aws_ssm_parameter" "linuxAmiOregon" {
-  provider = aws.region-worker
+  #provider = aws.region-worker
   name     = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 
@@ -18,7 +18,7 @@ resource "aws_key_pair" "master-key" {
 
 #Create EC2 in prod
 resource "aws_instance" "prod-node" {
-  provider                    = aws
+  #provider                    = aws
   ami                         = data.aws_ssm_parameter.linuxAmi.value
   instance_type               = var.instance-type
   key_name                    = aws_key_pair.master-key.key_name
@@ -32,7 +32,7 @@ resource "aws_instance" "prod-node" {
 }
 
 resource "aws_instance" "dmz-node" {
-  provider                    = aws
+  #provider                    = aws
   ami                         = data.aws_ssm_parameter.linuxAmi.value
   instance_type               = var.instance-type
   key_name                    = aws_key_pair.master-key.key_name
