@@ -10,18 +10,11 @@ data "aws_ssm_parameter" "linuxAmiOregon" {
   name     = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 
-#create key pair for ec2 instance
-resource "aws_key_pair" "master-key" {
-  key_name   = "ec2-1"
-  public_key = file("~/AWS-Single_AZ-Multi_VPC/ec2.pub")
-}
-
 #Create EC2 in prod
 resource "aws_instance" "prod-node" {
   #provider                    = aws
   ami                         = data.aws_ssm_parameter.linuxAmi.value
   instance_type               = var.instance-type
-  key_name                    = aws_key_pair.master-key.key_name
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.vpc-1_public.id]
   subnet_id                   = aws_subnet.vpc-1-pub-1.id
@@ -35,7 +28,6 @@ resource "aws_instance" "dmz-node" {
   #provider                    = aws
   ami                         = data.aws_ssm_parameter.linuxAmi.value
   instance_type               = var.instance-type
-  key_name                    = aws_key_pair.master-key.key_name
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.vpc-2_public.id]
   subnet_id                   = aws_subnet.vpc-2-pub-1.id
